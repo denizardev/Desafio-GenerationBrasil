@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=app.py
+      - SQLALCHEMY_DATABASE_URI=postgresql://denizard:jwHARoaq5o0krNztdz2ZEcvVjyccpOHa@dpg-crhmhmjv2p9s73bd0u20-a.oregon-postgres.render.com/escola_yxnx
+      - SQLALCHEMY_TRACK_MODIFICATIONS=False
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: denizard
+      POSTGRES_PASSWORD: jwHARoaq5o0krNztdz2ZEcvVjyccpOHa
+      POSTGRES_DB: escola_yxnx
+    ports:
+      - "5432:5432"
