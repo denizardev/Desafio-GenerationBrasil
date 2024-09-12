@@ -1,0 +1,6 @@
+Flask
+SQLAlchemy
+psycopg2
+flask-swagger-ui
+flask-migrate
+Flask-SQLAlchemy
