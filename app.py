@@ -1,6 +1,9 @@
-from db_config import create_app
+from db_config import create_app, redirect
 
 app = create_app()
+@app.route('/')
+def index():
+ return redirect('/apidocs/#')
 
 if __name__ == '__main__':
     import os
