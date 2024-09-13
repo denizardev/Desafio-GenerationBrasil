@@ -199,9 +199,6 @@ def atualizar_aluno(id):
         '200': {
             'description': 'Aluno deletado com sucesso'
         },
-        '400': {
-            'description': 'Erro na solicitação'
-        },
         '404': {
             'description': 'Aluno não encontrado'
         }
@@ -210,10 +207,7 @@ def atualizar_aluno(id):
 def deletar_aluno(id):
     aluno = Aluno.query.get(id)
     if aluno:
-        try:
-            db.session.delete(aluno)
-            db.session.commit()
-            return jsonify(aluno.to_json()), 200
-        except Exception as e:
-            return jsonify({"erro": str(e)}), 400
+        db.session.delete(aluno)
+        db.session.commit()
+        return jsonify({"mensagem": "Aluno deletado com sucesso"}), 200
     return jsonify({"erro": "Aluno não encontrado"}), 404
