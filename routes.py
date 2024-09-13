@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, redirect
+from flask import Blueprint, jsonify, redirect, request
 from flasgger import swag_from
 from models import Aluno
 from db_config import db
@@ -6,7 +6,7 @@ from db_config import db
 alunos = Blueprint('alunos', __name__)
 @alunos.route('/')
 def index():
-    return jsonify({"message": "Bem-vindo à API de Alunos"}), 200
+    return redirect('/apidocs/') 
 
 @alunos.route('/alunos', methods=['POST'])
 @swag_from({
