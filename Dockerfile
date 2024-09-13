@@ -5,11 +5,10 @@ RUN apt-get update && apt-get install -y gcc libpq-dev
 WORKDIR /app
 
 COPY requirements.txt .
-
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
 EXPOSE 5000
 
-CMD ["flask", "db", "upgrade", "&&", "python", "app.py"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
