@@ -5,10 +5,11 @@ from db_config import db
 
 alunos = Blueprint('alunos', __name__)
 
+# ... (outros endpoints)
+
 @alunos.route('/alunos', methods=['POST'])
 @swag_from({
-    'tags': ['Alunos'],
-    'description': 'Cria um novo aluno',
+    # ... (outras configurações)
     'parameters': [
         {
             'name': 'body',
@@ -22,20 +23,13 @@ alunos = Blueprint('alunos', __name__)
                     'nota_primeiro_semestre': {'type': 'number'},
                     'nota_segundo_semestre': {'type': 'number'},
                     'nome_professor': {'type': 'string'},
-                    'numero_sala': {'type': 'string'}
+                    'numero_sala': {'type': 'integer'}  # Alterado para integer
                 },
                 'required': ['nome', 'idade']
             }
         }
     ],
-    'responses': {
-        '201': {
-            'description': 'Aluno criado com sucesso'
-        },
-        '400': {
-            'description': 'Erro na solicitação'
-        }
-    }
+    # ... (outras configurações)
 })
 def cria_aluno():
     body = request.get_json()
@@ -46,13 +40,15 @@ def cria_aluno():
             nota_primeiro_semestre=body['nota_primeiro_semestre'],
             nota_segundo_semestre=body['nota_segundo_semestre'],
             nome_professor=body['nome_professor'],
-            numero_sala=body['numero_sala']
+            numero_sala=int(body['numero_sala'])  # Converte para inteiro
         )
         db.session.add(novo_aluno)
         db.session.commit()
         return jsonify(novo_aluno.to_json()), 201
     except Exception as e:
         return jsonify({"erro": str(e)}), 400
+
+# ... (outros endpoints)
 
 @alunos.route('/alunos', methods=['GET'])
 @swag_from({
@@ -72,7 +68,7 @@ def cria_aluno():
                         'nota_primeiro_semestre': {'type': 'number'},
                         'nota_segundo_semestre': {'type': 'number'},
                         'nome_professor': {'type': 'string'},
-                        'numero_sala': {'type': 'string'}
+                        'numero_sala': {'type': 'integer'}  # Alterado para integer
                     }
                 }
             }
@@ -83,19 +79,11 @@ def lista_alunos():
     alunos = Aluno.query.all()
     return jsonify([aluno.to_json() for aluno in alunos]), 200
 
+# ... (outros endpoints)
+
 @alunos.route('/alunos/<int:id>', methods=['GET'])
 @swag_from({
-    'tags': ['Alunos'],
-    'description': 'Busca um aluno pelo ID',
-    'parameters': [
-        {
-            'name': 'id',
-            'description': 'ID do aluno',
-            'in': 'path',
-            'type': 'integer',
-            'required': True
-        }
-    ],
+    # ... (outras configurações)
     'responses': {
         '200': {
             'description': 'Aluno encontrado',
@@ -108,7 +96,7 @@ def lista_alunos():
                     'nota_primeiro_semestre': {'type': 'number'},
                     'nota_segundo_semestre': {'type': 'number'},
                     'nome_professor': {'type': 'string'},
-                    'numero_sala': {'type': 'string'}
+                    'numero_sala': {'type': 'integer'}  # Alterado para integer
                 }
             }
         },
@@ -118,23 +106,13 @@ def lista_alunos():
     }
 })
 def buscar_aluno(id):
-    aluno = Aluno.query.get(id)
-    if aluno:
-        return jsonify(aluno.to_json()), 200
-    return jsonify({"erro": "Aluno não encontrado"}), 404
+    # ... (resto do código)
 
 @alunos.route('/alunos/<int:id>', methods=['PUT'])
 @swag_from({
-    'tags': ['Alunos'],
-    'description': 'Atualiza os dados de um aluno',
+    # ... (outras configurações)
     'parameters': [
-        {
-            'name': 'id',
-            'description': 'ID do aluno',
-            'in': 'path',
-            'type': 'integer',
-            'required': True
-        },
+        # ... (outros parâmetros)
         {
             'name': 'body',
             'description': 'Dados atualizados do aluno',
@@ -147,67 +125,14 @@ def buscar_aluno(id):
                     'nota_primeiro_semestre': {'type': 'number'},
                     'nota_segundo_semestre': {'type': 'number'},
                     'nome_professor': {'type': 'string'},
-                    'numero_sala': {'type': 'string'}
+                    'numero_sala': {'type': 'integer'}  # Alterado para integer
                 }
             }
         }
     ],
-    'responses': {
-        '200': {
-            'description': 'Aluno atualizado com sucesso'
-        },
-        '400': {
-            'description': 'Erro na solicitação'
-        },
-        '404': {
-            'description': 'Aluno não encontrado'
-        }
-    }
+    # ... (outras configurações)
 })
 def atualizar_aluno(id):
-    body = request.get_json()
-    aluno = Aluno.query.get(id)
-    if aluno:
-        try:
-            aluno.nome = body.get('nome', aluno.nome)
-            aluno.idade = body.get('idade', aluno.idade)
-            aluno.nota_primeiro_semestre = body.get('nota_primeiro_semestre', aluno.nota_primeiro_semestre)
-            aluno.nota_segundo_semestre = body.get('nota_segundo_semestre', aluno.nota_segundo_semestre)
-            aluno.nome_professor = body.get('nome_professor', aluno.nome_professor)
-            aluno.numero_sala = body.get('numero_sala', aluno.numero_sala)
-            
-            db.session.commit()
-            return jsonify(aluno.to_json()), 200
-        except Exception as e:
-            return jsonify({"erro": str(e)}), 400
-    return jsonify({"erro": "Aluno não encontrado"}), 404
+    # ... (resto do código)
 
-@alunos.route('/alunos/<int:id>', methods=['DELETE'])
-@swag_from({
-    'tags': ['Alunos'],
-    'description': 'Deleta um aluno pelo ID',
-    'parameters': [
-        {
-            'name': 'id',
-            'description': 'ID do aluno',
-            'in': 'path',
-            'type': 'integer',
-            'required': True
-        }
-    ],
-    'responses': {
-        '200': {
-            'description': 'Aluno deletado com sucesso'
-        },
-        '404': {
-            'description': 'Aluno não encontrado'
-        }
-    }
-})
-def deletar_aluno(id):
-    aluno = Aluno.query.get(id)
-    if aluno:
-        db.session.delete(aluno)
-        db.session.commit()
-        return jsonify({"mensagem": "Aluno deletado com sucesso"}), 200
-    return jsonify({"erro": "Aluno não encontrado"}), 404
+# ... (outros endpoints)

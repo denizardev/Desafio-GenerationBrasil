@@ -9,7 +9,7 @@ class Aluno(db.Model):
     nota_primeiro_semestre = db.Column(db.Float, nullable=False)
     nota_segundo_semestre = db.Column(db.Float, nullable=False)
     nome_professor = db.Column(db.String(100), nullable=False)
-    numero_sala = db.Column(db.Integer, nullable=False)
+    numero_sala = db.Column(db.Integer, nullable=False)  # Mantenha como Integer
 
     def to_json(self):
         return {
