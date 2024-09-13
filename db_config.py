@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flasgger import Swagger
@@ -8,8 +8,13 @@ migrate = Migrate()  # Inicialize o Migrate
 
 def create_app():
     app = Flask(__name__)
+    @app.route('/')
+    def index():
+        return redirect('/apidocs/#')
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://denizard:jwHARoaq5o0krNztdz2ZEcvVjyccpOHa@dpg-crhmhmjv2p9s73bd0u20-a.oregon-postgres.render.com/escola_yxnx'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
 
     swagger_config = {
         'title': 'Api Denizard',
