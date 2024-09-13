@@ -26,7 +26,7 @@ def create_app():
         }
     }
 
-    Swagger(app, template='swagger.yml')
+    Swagger(app, template=swagger_config)
 
     db.init_app(app)
     migrate.init_app(app, db)  # Vincule o Migrate com a aplicação e o banco de dados
